@@ -1,77 +1,55 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import heroImg from "@/assets/hero-illustration.png";
-
-const stats = [
-  { value: "13+", label: "APIs Built" },
-  { value: "2+", label: "Years Experience" },
-  { value: "44+", label: "Club Members Led" },
-  { value: "1", label: "Research Paper" },
-];
+import { ArrowDown } from "lucide-react";
 
 const HeroSection = () => (
-  <section id="home" className="min-h-screen flex items-center section-padding pt-28">
-    <div className="container mx-auto">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        {/* Left */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-6">
-            Learn → Build → Repeat
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-            Build{" "}
-            <span className="text-gradient">Scalable Systems</span>
-            <br />
-            <span className="italic font-light text-muted-foreground">step by step</span>{" "}
-            With Anand
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-lg mb-8 leading-relaxed">
-            Backend-focused CS Engineer — building robust APIs, optimizing databases, and researching AI-powered deepfake detection. Let's build something meaningful.
-          </p>
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-xl font-medium hover:opacity-90 transition-opacity group"
-          >
-            See my work
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </a>
-        </motion.div>
-
-        {/* Right */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="flex justify-center"
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-primary/10 rounded-3xl blur-3xl" />
-            <img
-              src={heroImg}
-              alt="Developer illustration"
-              className="relative rounded-3xl w-full max-w-md animate-float"
-            />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Stats */}
+  <section id="home" className="min-h-screen flex flex-col justify-center section-padding pt-24">
+    <div className="max-w-6xl mx-auto w-full">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20"
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        {stats.map((s) => (
-          <div key={s.label} className="glass-card rounded-xl p-6 text-center glow-border">
-            <p className="text-3xl font-bold text-primary font-display">{s.value}</p>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground mt-1">{s.label}</p>
-          </div>
-        ))}
+        <p className="text-sm font-body tracking-widest uppercase text-muted-foreground mb-8">
+          Backend Engineer · CS Student · Researcher
+        </p>
+
+        <h1 className="text-5xl sm:text-7xl lg:text-[5.5rem] font-display leading-[1.05] mb-8">
+          Hi, I'm{" "}
+          <span className="text-primary">Nishchay</span>
+          <br />
+          <span className="text-muted-foreground">Sahu</span>
+        </h1>
+
+        <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed mb-12">
+          I design robust backends, optimize databases, and research AI-powered systems. 
+          Currently building scalable APIs and exploring deepfake detection.
+        </p>
+
+        <div className="flex flex-wrap gap-4 items-center">
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-2 bg-foreground text-background px-7 py-3.5 rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
+          >
+            View Projects
+          </a>
+          <a
+            href="#about"
+            className="inline-flex items-center gap-2 border-2 border-border text-foreground px-7 py-3.5 rounded-full font-medium text-sm hover:border-foreground transition-colors"
+          >
+            About Me
+          </a>
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="mt-24 flex items-center gap-3 text-muted-foreground"
+      >
+        <ArrowDown size={16} className="animate-bounce" />
+        <span className="text-xs tracking-widest uppercase">Scroll to explore</span>
       </motion.div>
     </div>
   </section>

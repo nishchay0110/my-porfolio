@@ -1,84 +1,75 @@
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const projects = [
   {
-    title: "NeuroBlink – Deepfake Detection",
+    number: "01",
+    title: "NeuroBlink",
+    subtitle: "Deepfake Detection via Eye-Blink Analysis",
     tech: "Python · TensorFlow · CNN · LSTM · OpenCV",
     desc: "AI pipeline detecting deepfakes via eye-blinking patterns with 92% accuracy. Research accepted at IEEE International Conference 2025.",
-    badges: ["🔬 Research", "🏆 IEEE 2025"],
   },
   {
+    number: "02",
     title: "Order Management System",
+    subtitle: "Enterprise Backend Architecture",
     tech: "Java · REST APIs · MySQL · JDBC",
-    desc: "Enterprise backend system managing orders, users, and inventory. Implemented normalized relational DB schema and optimized queries for bulk operations.",
-    badges: ["⚙️ Backend", "📊 Enterprise"],
+    desc: "Enterprise backend managing orders, users, and inventory. Normalized relational DB schema with optimized queries for bulk operations.",
   },
   {
-    title: "Hotel Menu Management",
+    number: "03",
+    title: "Hotel Menu Manager",
+    subtitle: "Full-Stack CRUD Application",
     tech: "Node.js · MySQL · JavaScript · JWT",
-    desc: "Role-based web app for menu/pricing management with JWT authentication. Reduced manual update effort by 60% with complete CRUD operations.",
-    badges: ["🔐 Auth", "🍽️ Full-Stack"],
+    desc: "Role-based web app for menu and pricing management with JWT auth. Reduced manual update effort by 60% with streamlined CRUD operations.",
   },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 const ProjectsSection = () => (
   <section id="projects" className="section-padding">
-    <div className="container mx-auto">
+    <div className="max-w-6xl mx-auto">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="mb-14"
+        className="mb-16"
       >
-        <p className="text-sm uppercase tracking-[0.3em] text-primary mb-2">Featured work</p>
-        <h2 className="text-3xl md:text-4xl font-bold">Projects I've built</h2>
+        <div className="accent-line mb-4" />
+        <h2 className="text-3xl md:text-4xl font-display">Selected Projects</h2>
       </motion.div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="grid md:grid-cols-3 gap-6"
-      >
-        {projects.map((p) => (
+      <div className="space-y-0 border-t border-border">
+        {projects.map((p, i) => (
           <motion.div
             key={p.title}
-            variants={item}
-            className="glass-card rounded-2xl p-8 flex flex-col hover:border-primary/30 transition-colors group"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="border-b border-border py-10 md:py-12 group cursor-pointer hover:bg-card/50 transition-colors px-4 -mx-4 md:px-8 md:-mx-8"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <ExternalLink className="text-primary" size={18} />
+            <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-12">
+              <span className="text-sm text-primary font-body tracking-wider md:pt-2">{p.number}</span>
+              <div className="flex-1">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-display group-hover:text-primary transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">{p.subtitle}</p>
+                  </div>
+                  <ArrowUpRight
+                    size={20}
+                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0 mt-2"
+                  />
+                </div>
+                <p className="text-xs text-primary/70 font-mono mt-3">{p.tech}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-3 max-w-xl">{p.desc}</p>
               </div>
-            </div>
-            <h3 className="text-lg font-semibold font-display mb-2">{p.title}</h3>
-            <p className="text-xs text-primary/80 mb-3 font-mono">{p.tech}</p>
-            <p className="text-sm text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-            <div className="flex gap-2 mt-5 flex-wrap">
-              {p.badges.map((b) => (
-                <span
-                  key={b}
-                  className="text-xs px-3 py-1 rounded-full bg-secondary text-secondary-foreground"
-                >
-                  {b}
-                </span>
-              ))}
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   </section>
 );
