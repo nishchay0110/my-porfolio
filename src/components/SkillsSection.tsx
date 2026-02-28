@@ -15,30 +15,32 @@ const SkillsSection = () => (
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="mb-16"
+        className="text-center mb-16"
       >
-        <div className="accent-line mb-4" />
-        <h2 className="text-3xl md:text-4xl font-display font-bold">Skills & Technologies</h2>
+        <div className="accent-line mx-auto mb-4" />
+        <h2 className="text-3xl md:text-5xl font-display font-bold">Tech Stack</h2>
       </motion.div>
 
-      <div className="space-y-10">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {skillGroups.map((group, i) => (
           <motion.div
             key={group.category}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12"
+            className={`glass-card p-6 hover:border-primary/30 transition-all duration-300 ${
+              i === skillGroups.length - 1 ? "sm:col-span-2 lg:col-span-1" : ""
+            }`}
           >
-            <h3 className="text-sm uppercase tracking-widest text-primary font-semibold md:w-28 md:text-right shrink-0">
+            <h3 className="text-xs uppercase tracking-[0.2em] text-primary font-bold mb-4">
               {group.category}
             </h3>
             <div className="flex flex-wrap gap-2">
               {group.skills.map((skill) => (
                 <span
                   key={skill}
-                  className="px-4 py-2 rounded-full glass-card text-sm text-foreground hover:border-primary/50 hover:text-primary hover:shadow-[0_0_15px_hsl(175_85%_50%/0.1)] transition-all duration-300 cursor-default"
+                  className="px-3 py-1.5 rounded-lg bg-secondary text-secondary-foreground text-xs font-medium hover:bg-primary/15 hover:text-primary transition-all duration-200 cursor-default"
                 >
                   {skill}
                 </span>
