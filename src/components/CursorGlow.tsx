@@ -1,78 +1,130 @@
 import { useEffect, useRef } from "react";
 
+interface Particle {
+  x: number;
+  y: number;
+  baseX: number;
+  baseY: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+  hue: number;
+}
+
 const CursorGlow = () => {
-  const glowRef = useRef<HTMLDivElement>(null);
-  const trailRef = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: 0, y: 0 });
-  const target = useRef({ x: 0, y: 0 });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouse = useRef({ x: -500, y: -500 });
+  const particles = useRef<Particle[]>([]);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    };
+
+    const initParticles = () => {
+      particles.current = [];
+      const count = Math.floor((canvas.width * canvas.height) / 12000);
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        particles.current.push({
+          x, y, baseX: x, baseY: y,
+          size: Math.random() * 2 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.5 + 0.1,
+          hue: Math.random() > 0.5 ? 175 : 265,
+        });
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      target.current = { x: e.clientX, y: e.clientY };
+      mouse.current = { x: e.clientX, y: e.clientY };
     };
 
     const animate = () => {
-      pos.current.x += (target.current.x - pos.current.x) * 0.08;
-      pos.current.y += (target.current.y - pos.current.y) * 0.08;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const mx = mouse.current.x;
+      const my = mouse.current.y;
 
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${target.current.x - 200}px, ${target.current.y - 200}px)`;
+      for (const p of particles.current) {
+        // Drift
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        // Wrap around
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        // Cursor repulsion
+        const dx = p.x - mx;
+        const dy = p.y - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = 150;
+
+        if (dist < maxDist) {
+          const force = (1 - dist / maxDist) * 2;
+          p.x += (dx / dist) * force;
+          p.y += (dy / dist) * force;
+        }
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 80%, 60%, ${p.opacity})`;
+        ctx.fill();
       }
-      if (trailRef.current) {
-        trailRef.current.style.transform = `translate(${pos.current.x - 300}px, ${pos.current.y - 300}px)`;
+
+      // Draw connections
+      const pts = particles.current;
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            const alpha = (1 - dist / 100) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `hsla(175, 80%, 55%, ${alpha})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
       }
 
       requestAnimationFrame(animate);
     };
 
+    resize();
+    window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
     const raf = requestAnimationFrame(animate);
 
     return () => {
+      window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(raf);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Primary glow - follows cursor tightly */}
-      <div
-        ref={glowRef}
-        className="absolute w-[400px] h-[400px] rounded-full opacity-20"
-        style={{
-          background: "radial-gradient(circle, hsl(175 85% 50% / 0.4) 0%, hsl(265 70% 60% / 0.15) 40%, transparent 70%)",
-          filter: "blur(60px)",
-          willChange: "transform",
-        }}
-      />
-      {/* Trail glow - follows with delay */}
-      <div
-        ref={trailRef}
-        className="absolute w-[600px] h-[600px] rounded-full opacity-10"
-        style={{
-          background: "radial-gradient(circle, hsl(265 70% 60% / 0.3) 0%, hsl(175 85% 50% / 0.1) 50%, transparent 70%)",
-          filter: "blur(80px)",
-          willChange: "transform",
-        }}
-      />
-      {/* Static ambient orbs */}
-      <div
-        className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full animate-pulse-glow"
-        style={{
-          background: "radial-gradient(circle, hsl(175 85% 50% / 0.05) 0%, transparent 60%)",
-          filter: "blur(100px)",
-        }}
-      />
-      <div
-        className="absolute bottom-1/3 left-1/6 w-[400px] h-[400px] rounded-full animate-pulse-glow"
-        style={{
-          background: "radial-gradient(circle, hsl(265 70% 60% / 0.05) 0%, transparent 60%)",
-          filter: "blur(100px)",
-          animationDelay: "2s",
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-0"
+      style={{ opacity: 0.7 }}
+    />
   );
 };
 
