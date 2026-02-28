@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
+import { Briefcase, Users, BookOpen } from "lucide-react";
 
 const experiences = [
   {
+    icon: Briefcase,
     role: "SDE Intern",
     org: "HashedBit Innovations",
-    period: "Jan 2025 – Apr 2025",
+    period: "Jan – Apr 2025",
     points: [
       "Built 15+ RESTful APIs with Node.js & Express.js",
       "Reduced API response time by 40%",
@@ -13,6 +15,7 @@ const experiences = [
     ],
   },
   {
+    icon: Users,
     role: "President",
     org: "Sipna Coders Club",
     period: "2023 – Present",
@@ -23,6 +26,7 @@ const experiences = [
     ],
   },
   {
+    icon: BookOpen,
     role: "Research & Publications",
     org: "IEEE & ANTIC 2025",
     period: "2025",
@@ -41,41 +45,59 @@ const ExperienceSection = () => (
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="mb-16"
+        className="text-center mb-16"
       >
-        <div className="accent-line mb-4" />
-        <h2 className="text-3xl md:text-4xl font-display font-bold">Experience</h2>
+        <div className="accent-line mx-auto mb-4" />
+        <h2 className="text-3xl md:text-5xl font-display font-bold">Experience</h2>
       </motion.div>
 
-      <div className="space-y-6">
-        {experiences.map((exp, i) => (
-          <motion.div
-            key={exp.role}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6 md:p-8 hover:border-primary/30 transition-all duration-300"
-          >
-            <div className="grid md:grid-cols-3 gap-4 md:gap-8">
-              <div>
-                <h3 className="text-lg font-display font-bold">{exp.role}</h3>
-                <p className="text-sm text-primary font-medium mt-1">{exp.org}</p>
-                <p className="text-xs text-muted-foreground font-body mt-2 px-3 py-1 rounded-full bg-secondary inline-block">
-                  {exp.period}
-                </p>
+      {/* Timeline */}
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />
+
+        <div className="space-y-12">
+          {experiences.map((exp, i) => (
+            <motion.div
+              key={exp.role}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12 }}
+              className={`relative flex flex-col md:flex-row gap-6 md:gap-12 ${
+                i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+              }`}
+            >
+              {/* Timeline dot */}
+              <div className="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-primary border-2 border-background -translate-x-1.5 mt-6 z-10" />
+
+              {/* Card */}
+              <div className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? "md:pr-4" : "md:pl-4"}`}>
+                <div className="glass-card p-6 hover:border-primary/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <exp.icon size={16} className="text-primary" />
+                    </div>
+                    <span className="text-xs text-primary font-semibold tracking-wider uppercase">{exp.period}</span>
+                  </div>
+                  <h3 className="text-lg font-display font-bold">{exp.role}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{exp.org}</p>
+                  <ul className="space-y-2">
+                    {exp.points.map((p) => (
+                      <li key={p} className="text-xs text-muted-foreground flex items-start gap-2">
+                        <span className="w-1 h-1 rounded-full bg-primary mt-1.5 shrink-0" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <ul className="md:col-span-2 space-y-3">
-                {exp.points.map((p) => (
-                  <li key={p} className="text-sm text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        ))}
+
+              {/* Spacer for other side */}
+              <div className="hidden md:block md:w-[calc(50%-2rem)]" />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   </section>

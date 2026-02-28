@@ -2,93 +2,95 @@ import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 
 const HeroSection = () => (
-  <section id="home" className="min-h-screen flex flex-col justify-center section-padding pt-24 relative z-10">
-    <div className="max-w-6xl mx-auto w-full">
+  <section id="home" className="min-h-screen flex items-center section-padding pt-20 relative z-10">
+    <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
+      {/* Left content */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/40 backdrop-blur-sm mb-8"
-        >
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
-          <span className="text-xs font-body tracking-wider text-muted-foreground uppercase">
-            Available for opportunities
-          </span>
-        </motion.div>
-
-        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold leading-[1.02] mb-6 tracking-tight">
-          <span className="gradient-text glow-text">Nishchay</span>
-          <br />
-          <span className="text-foreground">Sahu</span>
-          <span className="text-primary">.</span>
-        </h1>
-
-        <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed mb-10 font-light">
-          Backend engineer crafting scalable APIs, optimizing databases, and
-          researching AI-powered systems. Building the future, one commit at a time.
-        </p>
-
-        <div className="flex flex-wrap gap-4 items-center mb-16">
-          <a
-            href="#projects"
-            className="group inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-full font-semibold text-sm hover:shadow-[0_0_30px_hsl(175_85%_50%/0.3)] transition-all duration-300"
-          >
-            View Projects
-            <ArrowDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 border border-border text-foreground px-7 py-3.5 rounded-full font-medium text-sm hover:border-primary hover:text-primary transition-all duration-300"
-          >
-            Let's Talk
-          </a>
-        </div>
-
-        {/* Social links */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="flex items-center gap-5"
+          transition={{ delay: 0.3 }}
+          className="text-xs font-body tracking-[0.3em] uppercase text-primary mb-6"
         >
+          Backend Engineer · Researcher · Builder
+        </motion.div>
+
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold leading-[1.05] mb-6 tracking-tight">
+          Nishchay
+          <br />
+          <span className="gradient-text glow-text">Sahu</span>
+          <span className="text-primary">.</span>
+        </h1>
+
+        <p className="text-base text-muted-foreground max-w-md leading-relaxed mb-8">
+          Crafting scalable backends, optimizing databases, and pushing AI research boundaries.
+          Currently exploring deepfake detection & building production-grade APIs.
+        </p>
+
+        <div className="flex flex-wrap gap-3 mb-10">
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold text-sm hover:shadow-[0_0_30px_hsl(175_85%_50%/0.3)] transition-all duration-300"
+          >
+            Explore Work
+            <ArrowDown size={14} />
+          </a>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 border border-border text-foreground px-6 py-3 rounded-xl font-medium text-sm hover:border-primary hover:text-primary transition-all duration-300"
+          >
+            Contact Me
+          </a>
+        </div>
+
+        <div className="flex items-center gap-4">
           {[
-            { icon: Github, href: "https://github.com/", label: "GitHub" },
-            { icon: Linkedin, href: "https://linkedin.com/", label: "LinkedIn" },
-            { icon: Mail, href: "mailto:nishchaysahu@gmail.com", label: "Email" },
-          ].map(({ icon: Icon, href, label }) => (
+            { icon: Github, href: "https://github.com/" },
+            { icon: Linkedin, href: "https://linkedin.com/" },
+            { icon: Mail, href: "mailto:nishchaysahu@gmail.com" },
+          ].map(({ icon: Icon, href }) => (
             <a
-              key={label}
+              key={href}
               href={href}
               target={href.startsWith("http") ? "_blank" : undefined}
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-[0_0_15px_hsl(175_85%_50%/0.15)] transition-all duration-300"
+              className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-300"
             >
-              <Icon size={16} />
+              <Icon size={15} />
             </a>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Right - stats grid */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        className="mt-20 flex items-center gap-3 text-muted-foreground"
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
+        className="grid grid-cols-2 gap-4"
       >
-        <div className="w-5 h-8 rounded-full border border-muted-foreground/40 flex items-start justify-center p-1">
+        {[
+          { num: "15+", label: "APIs Built", desc: "Production-ready RESTful APIs" },
+          { num: "92%", label: "AI Accuracy", desc: "NeuroBlink deepfake detection" },
+          { num: "2", label: "IEEE Papers", desc: "Published research papers" },
+          { num: "150+", label: "Event Attendees", desc: "Devthon 2025 participants" },
+        ].map((s, i) => (
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-1.5 rounded-full bg-primary"
-          />
-        </div>
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
+            key={s.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 + i * 0.1 }}
+            className="glass-card p-5 hover:border-primary/30 transition-all duration-300"
+          >
+            <p className="text-3xl font-display font-bold gradient-text">{s.num}</p>
+            <p className="text-sm text-foreground font-medium mt-2">{s.label}</p>
+            <p className="text-xs text-muted-foreground mt-1">{s.desc}</p>
+          </motion.div>
+        ))}
       </motion.div>
     </div>
   </section>
